@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tuosha.dao.ImsXuanMixloanProductDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.ImsXuanMixloanProductEntity" id="imsXuanMixloanProductMap">
+        <result property="id" column="id"/>
+        <result property="uniacid" column="uniacid"/>
+        <result property="relateId" column="relate_id"/>
+        <result property="type" column="type"/>
+        <result property="isShow" column="is_show"/>
+        <result property="isHot" column="is_hot"/>
+        <result property="isNew" column="is_new"/>
+        <result property="countTime" column="count_time"/>
+        <result property="doneRewardType" column="done_reward_type"/>
+        <result property="doneRewardMoney" column="done_reward_money"/>
+        <result property="doneRewardPer" column="done_reward_per"/>
+        <result property="reRewardType" column="re_reward_type"/>
+        <result property="reRewardMoney" column="re_reward_money"/>
+        <result property="reRewardPer" column="re_reward_per"/>
+        <result property="createtime" column="createtime"/>
+        <result property="name" column="name"/>
+        <result property="extInfo" column="ext_info"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+  	  	     id ,  	        
+  	  	     uniacid ,  	        
+  	  	      relate_id as relateId  ,  	        
+  	  	     type ,  	        
+  	  	      is_show as isShow  ,  	        
+  	  	      is_hot as isHot  ,  	        
+  	  	      is_new as isNew  ,  	        
+  	  	      count_time as countTime  ,  	        
+  	  	      done_reward_type as doneRewardType  ,  	        
+  	  	      done_reward_money as doneRewardMoney  ,  	        
+  	  	      done_reward_per as doneRewardPer  ,  	        
+  	  	      re_reward_type as reRewardType  ,  	        
+  	  	      re_reward_money as reRewardMoney  ,  	        
+  	  	      re_reward_per as reRewardPer  ,  	        
+  	  	     createtime ,  	        
+  	  	     name ,  	        
+  	  	      ext_info as extInfo    	        
+  	  
+  </sql>
+
+    <select id="queryObject" resultType="com.example.tuosha.model.ImsXuanMixloanProductEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_product where id = #{value}
+    </select>
+
+    <select id="getproductArrayList" resultType="com.example.tuosha.model.ImsXuanMixloanProductEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_product
+    </select>
+
+    <select id="queryList" resultType="com.example.tuosha.model.ImsXuanMixloanProductEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_product
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from ims_xuan_mixloan_product 
+	</select>
+
+    <insert id="save" parameterType="com.example.tuosha.model.ImsXuanMixloanProductEntity" useGeneratedKeys="true"
+            keyProperty="id">
+		insert into ims_xuan_mixloan_product
+		(
+			`uniacid`, 
+			`relate_id`, 
+			`type`, 
+			`is_show`, 
+			`is_hot`, 
+			`is_new`, 
+			`count_time`, 
+			`done_reward_type`, 
+			`done_reward_money`, 
+			`done_reward_per`, 
+			`re_reward_type`, 
+			`re_reward_money`, 
+			`re_reward_per`, 
+			`createtime`, 
+			`name`, 
+			`ext_info`
+		)
+		values
+		(
+			#{uniacid}, 
+			#{relateId}, 
+			#{type}, 
+			#{isShow}, 
+			#{isHot}, 
+			#{isNew}, 
+			#{countTime}, 
+			#{doneRewardType}, 
+			#{doneRewardMoney}, 
+			#{doneRewardPer}, 
+			#{reRewardType}, 
+			#{reRewardMoney}, 
+			#{reRewardPer}, 
+			#{createtime}, 
+			#{name}, 
+			#{extInfo}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.example.tuosha.model.ImsXuanMixloanProductEntity">
+        update ims_xuan_mixloan_product
+        <set>
+            <if test="uniacid != null">`uniacid` = #{uniacid},</if>
+            <if test="relateId != null">`relate_id` = #{relateId},</if>
+            <if test="type != null">`type` = #{type},</if>
+            <if test="isShow != null">`is_show` = #{isShow},</if>
+            <if test="isHot != null">`is_hot` = #{isHot},</if>
+            <if test="isNew != null">`is_new` = #{isNew},</if>
+            <if test="countTime != null">`count_time` = #{countTime},</if>
+            <if test="doneRewardType != null">`done_reward_type` = #{doneRewardType},</if>
+            <if test="doneRewardMoney != null">`done_reward_money` = #{doneRewardMoney},</if>
+            <if test="doneRewardPer != null">`done_reward_per` = #{doneRewardPer},</if>
+            <if test="reRewardType != null">`re_reward_type` = #{reRewardType},</if>
+            <if test="reRewardMoney != null">`re_reward_money` = #{reRewardMoney},</if>
+            <if test="reRewardPer != null">`re_reward_per` = #{reRewardPer},</if>
+            <if test="createtime != null">`createtime` = #{createtime},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="extInfo != null">`ext_info` = #{extInfo}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from ims_xuan_mixloan_product where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from ims_xuan_mixloan_product where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

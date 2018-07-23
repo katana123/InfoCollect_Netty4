@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tuosha.dao.ImsXuanMixloanPaymentDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.ImsXuanMixloanPaymentEntity" id="imsXuanMixloanPaymentMap">
+        <result property="id" column="id"/>
+        <result property="uniacid" column="uniacid"/>
+        <result property="uid" column="uid"/>
+        <result property="msg" column="msg"/>
+        <result property="createtime" column="createtime"/>
+        <result property="effecttime" column="effecttime"/>
+        <result property="days" column="days"/>
+        <result property="tid" column="tid"/>
+        <result property="fee" column="fee"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+  	  	     id ,  	        
+  	  	     uniacid ,  	        
+  	  	     uid ,  	        
+  	  	     msg ,  	        
+  	  	     createtime ,  	        
+  	  	     effecttime ,  	        
+  	  	     days ,  	        
+  	  	     tid ,  	        
+  	  	     fee   	        
+  	  
+  </sql>
+
+    <select id="queryObject" resultType="com.example.tuosha.model.ImsXuanMixloanPaymentEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_payment where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.example.tuosha.model.ImsXuanMixloanPaymentEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_payment
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from ims_xuan_mixloan_payment 
+	</select>
+
+    <insert id="save" parameterType="com.example.tuosha.model.ImsXuanMixloanPaymentEntity" useGeneratedKeys="true"
+            keyProperty="id">
+		insert into ims_xuan_mixloan_payment
+		(
+			`uniacid`, 
+			`uid`, 
+			`msg`, 
+			`createtime`, 
+			`effecttime`, 
+			`days`, 
+			`tid`, 
+			`fee`
+		)
+		values
+		(
+			#{uniacid}, 
+			#{uid}, 
+			#{msg}, 
+			#{createtime}, 
+			#{effecttime}, 
+			#{days}, 
+			#{tid}, 
+			#{fee}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.example.tuosha.model.ImsXuanMixloanPaymentEntity">
+        update ims_xuan_mixloan_payment
+        <set>
+            <if test="uniacid != null">`uniacid` = #{uniacid},</if>
+            <if test="uid != null">`uid` = #{uid},</if>
+            <if test="msg != null">`msg` = #{msg},</if>
+            <if test="createtime != null">`createtime` = #{createtime},</if>
+            <if test="effecttime != null">`effecttime` = #{effecttime},</if>
+            <if test="days != null">`days` = #{days},</if>
+            <if test="tid != null">`tid` = #{tid},</if>
+            <if test="fee != null">`fee` = #{fee}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from ims_xuan_mixloan_payment where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from ims_xuan_mixloan_payment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tuosha.dao.ImsXuanMixloanProductApplyDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.ImsXuanMixloanProductApplyEntity" id="imsXuanMixloanProductApplyMap">
+        <result property="id" column="id"/>
+        <result property="uniacid" column="uniacid"/>
+        <result property="uid" column="uid"/>
+        <result property="pid" column="pid"/>
+        <result property="phone" column="phone"/>
+        <result property="certno" column="certno"/>
+        <result property="realname" column="realname"/>
+        <result property="relateMoney" column="relate_money"/>
+        <result property="inviter" column="inviter"/>
+        <result property="reBonus" column="re_bonus"/>
+        <result property="doneBonus" column="done_bonus"/>
+        <result property="extraBonus" column="extra_bonus"/>
+        <result property="status" column="status"/>
+        <result property="createtime" column="createtime"/>
+        <result property="degree" column="degree"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+  	  	     id ,  	        
+  	  	     uniacid ,  	        
+  	  	     uid ,  	        
+  	  	     pid ,  	        
+  	  	     phone ,  	        
+  	  	     certno ,  	        
+  	  	     realname ,  	        
+  	  	      relate_money as relateMoney  ,  	        
+  	  	     inviter ,  	        
+  	  	      re_bonus as reBonus  ,  	        
+  	  	      done_bonus as doneBonus  ,  	        
+  	  	      extra_bonus as extraBonus  ,  	        
+  	  	     status ,  	        
+  	  	     createtime ,  	        
+  	  	     degree   	        
+  	  
+  </sql>
+
+    <select id="queryObject" resultType="com.example.tuosha.model.ImsXuanMixloanProductApplyEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_product_apply where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.example.tuosha.model.ImsXuanMixloanProductApplyEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from ims_xuan_mixloan_product_apply
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from ims_xuan_mixloan_product_apply 
+	</select>
+
+    <insert id="save" parameterType="com.example.tuosha.model.ImsXuanMixloanProductApplyEntity" useGeneratedKeys="true"
+            keyProperty="id">
+		insert into ims_xuan_mixloan_product_apply
+		(
+			`uniacid`, 
+			`uid`, 
+			`pid`, 
+			`phone`, 
+			`certno`, 
+			`realname`, 
+			`relate_money`, 
+			`inviter`, 
+			`re_bonus`, 
+			`done_bonus`, 
+			`extra_bonus`, 
+			`status`, 
+			`createtime`, 
+			`degree`
+		)
+		values
+		(
+			#{uniacid}, 
+			#{uid}, 
+			#{pid}, 
+			#{phone}, 
+			#{certno}, 
+			#{realname}, 
+			#{relateMoney}, 
+			#{inviter}, 
+			#{reBonus}, 
+			#{doneBonus}, 
+			#{extraBonus}, 
+			#{status}, 
+			#{createtime}, 
+			#{degree}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.example.tuosha.model.ImsXuanMixloanProductApplyEntity">
+        update ims_xuan_mixloan_product_apply
+        <set>
+            <if test="uniacid != null">`uniacid` = #{uniacid},</if>
+            <if test="uid != null">`uid` = #{uid},</if>
+            <if test="pid != null">`pid` = #{pid},</if>
+            <if test="phone != null">`phone` = #{phone},</if>
+            <if test="certno != null">`certno` = #{certno},</if>
+            <if test="realname != null">`realname` = #{realname},</if>
+            <if test="relateMoney != null">`relate_money` = #{relateMoney},</if>
+            <if test="inviter != null">`inviter` = #{inviter},</if>
+            <if test="reBonus != null">`re_bonus` = #{reBonus},</if>
+            <if test="doneBonus != null">`done_bonus` = #{doneBonus},</if>
+            <if test="extraBonus != null">`extra_bonus` = #{extraBonus},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="createtime != null">`createtime` = #{createtime},</if>
+            <if test="degree != null">`degree` = #{degree}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from ims_xuan_mixloan_product_apply where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from ims_xuan_mixloan_product_apply where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
