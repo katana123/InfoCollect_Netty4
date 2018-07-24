@@ -1,5 +1,6 @@
 package com.example.tuosha.server;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.example.tuosha.Util.NetWorkImpl;
 import com.example.tuosha.Util.Protocols;
@@ -13,7 +14,6 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import net.sf.json.JSONObject;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -172,12 +172,15 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 case Protocols.LOGIN:
                     if (true) {
                         TbUsersEntity systemUser = swbean.getTbUsersEntity();
-                        String nickname = systemUser.getNickname();
-                        String password = systemUser.getPassword();
+                        //String nickname =  systemUser.getNickname();
+                        String phone =  systemUser.getPhone();
 
-                        TbUsersEntity rebackUser = tbUsersServiceImpl.queryuser(nickname, password);
-                        if (rebackUser.getStatus() != null) {
-                            System.out.println("sql执行完成2" + rebackUser);
+                        String password =  systemUser.getPassword();
+
+                        TbUsersEntity rebackUser =tbUsersServiceImpl.queryuser(phone,password);
+                        System.out.println("sql执行完成"+rebackUser);
+                        if (rebackUser.getStatus()!=null) {
+                            System.out.println("sql执行完成2"+rebackUser);
                             resposeSwbean.setTbUsersEntity(rebackUser);
                             int result = Integer.parseInt(rebackUser.getStatus());
                             resposeSwbean.setTbUsersEntity(rebackUser);
@@ -186,8 +189,7 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                             System.out.println("0:未激活，1，正常，2，禁用");
                             resposeSwbean.setResult(result);
                             System.out.println("客户端登陆结果为：" + result);
-                        } else {
-                            System.out.println("用户不存在");
+                        }else{
                             resposeSwbean.setResult(3);
                         }
                         resposeSwbean.setCommand(Protocols.LOGIN);
@@ -247,7 +249,7 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                             int daybefore = (int) Math.ceil(TimeDif / (60 * 60 * 24L));
                             String daybeforeStr = String.valueOf(daybefore);
                             kouziBeans.get(i).setKouzitime(daybeforeStr);
-                            JSONObject JsonStr = JSONObject.fromObject(kouziBeans.get(i).getExtInfo());
+                            JSONObject JsonStr = JSONObject.parseObject(kouziBeans.get(i).getExtInfo());
                             String kouziUrl = JsonStr.getString("url");
                             kouziBeans.get(i).setKouzi_url(kouziUrl);
                         }
