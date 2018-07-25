@@ -42,9 +42,8 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
     // public InfoImpl info = new InfoImpl();
     //public HashMap<String, ArrayList<ActionBean>> hashMapAction = new HashMap<String, ArrayList<ActionBean>>();
 
-    public ImsXuanMixloanBankServiceImpl bankServiceImpl = new ImsXuanMixloanBankServiceImpl();
-    public ImsXuanMixloanBankCardServiceImpl bankCardServiceImpl = new ImsXuanMixloanBankCardServiceImpl();
-    public ImsXuanMixloanChannelServiceImpl channelServiceImpl = new ImsXuanMixloanChannelServiceImpl();
+   //ic ImsXuanMixloanBankCardServiceImpl bankCardServiceImpl = new ImsXuanMixloanBankCardServiceImpl();
+  //  public ImsXuanMixloanChannelServiceImpl channelServiceImpl = new ImsXuanMixloanChannelServiceImpl();
     public ImsXuanMixloanChannelSubjectServiceImpl channelSubjectServiceImpl = new ImsXuanMixloanChannelSubjectServiceImpl();
     public ImsXuanMixloanCreditcardServiceImpl CreditcardServiceImpl = new ImsXuanMixloanCreditcardServiceImpl();
     public ImsXuanMixloanHelpServiceImpl helpServiceImpl = new ImsXuanMixloanHelpServiceImpl();
@@ -56,6 +55,32 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
     public ImsXuanMixloanProductApplyServiceImpl productApplyServiceImpl = new ImsXuanMixloanProductApplyServiceImpl();
     public ImsXuanMixloanProductServiceImpl productServiceImpl = new ImsXuanMixloanProductServiceImpl();
     public TbUsersServiceImpl tbUsersServiceImpl = new TbUsersServiceImpl();
+
+    public AlipayServiceImpl alipayServiceImpl = new AlipayServiceImpl();
+    public BankCardsServiceImpl bankCardsServiceImpl = new BankCardsServiceImpl();
+    public CategoriesServiceImpl categoriesServiceImpl = new CategoriesServiceImpl();
+    public DaikuansServiceImpl daikuansServiceImpl = new DaikuansServiceImpl();
+    public EDusServiceImpl eDusServiceImpl = new EDusServiceImpl();
+    public HkjBannersServiceImpl hkjBannersServiceImpl = new HkjBannersServiceImpl();
+    public HkjsServiceImpl hkjsServiceImpl= new HkjsServiceImpl();
+    public JieQianBannersServiceImpl jieQianBannersServiceImpl= new JieQianBannersServiceImpl();
+    public JieQianJqCatServiceImpl jieQianJqCatServiceImpl= new JieQianJqCatServiceImpl();
+    public JieQiansServiceImpl jieQiansServiceImpl= new JieQiansServiceImpl();
+    public JqCatsServiceImpl jqCatsServiceImpl= new JqCatsServiceImpl();
+    public MigrationsServiceImpl migrationsServiceImpl = new MigrationsServiceImpl();
+    public MobileversionServiceImpl mobileversionServiceImpl = new MobileversionServiceImpl();
+    public MoneyRecordsServiceImpl moneyRecordsServiceImpl = new MoneyRecordsServiceImpl();
+    public NoticesServiceImpl noticesServiceImpl = new NoticesServiceImpl();
+    public OrdersServiceImpl ordersServiceImpl = new OrdersServiceImpl();
+    public PasswordResetsServiceImpl passwordResetsServiceImpl = new PasswordResetsServiceImpl();
+    public PostsServiceImpl postsServiceImpl = new PostsServiceImpl();
+    public ProductsServiceImpl productsServicesImpl = new ProductsServiceImpl();
+    public SettingsServiceImpl settingsServiceImpl= new SettingsServiceImpl();
+    public TiEsServiceImpl tiEsServiceImpl = new TiEsServiceImpl();
+    public ToolsServiceImpl toolsServiceImpl= new ToolsServiceImpl();
+    public UsersServiceImpl usersServiceImpl= new UsersServiceImpl();
+    public XinYongKasServiceImpl xinYongKasServiceImpl= new XinYongKasServiceImpl();
+    public XykBannersServiceImpl xykBannersServiceImpl= new XykBannersServiceImpl();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -118,19 +143,7 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                     break;
 
                 /************************ 用户权限判断 ***********************/
-                case Protocols.PERMISSION:               //返回副协议: 0为未注册 1为已注册未授权 2为已注册已授权
-                    if (true) {
-                        ImsXuanMixloanMemberEntity systemUser = swbean.getMemberEntity();
-                        System.out.println("********************imei: " + systemUser.getPhone());
-//                        String imei = (String)obj;
-                        final int result = swImpl.getPermissionResult(systemUser.getPhone());
-                        System.out.println("Permission:" + result);
-                        System.out.println("0为未注册，1为注册未授权，2为注册已授权");
-                        resposeSwbean.setResult(result);
-                        resposeSwbean.setRecommand(Protocols.PERMISSION);
-//                        this.write(Protocols.PERMISSION, result,null,ctx);
-                    }
-                    break;
+
                 /************************ 客户端心跳保持 ***********************/
                 case Protocols.HEART_BEAT:
                     resposeSwbean.setRecommand(Protocols.HEART_BEAT);
@@ -141,8 +154,8 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 case Protocols.BANKLIST:
                     if (true) {
 
-                        resposeSwbean.setProductList(productServiceImpl.queryProductBankAll());
-                        System.out.println("command:" + productServiceImpl.queryProductBankAll());
+                        resposeSwbean.setTiEsEntities(tiEsServiceImpl.queryListAll());
+                        System.out.println("command:" + tiEsServiceImpl.queryListAll());
                         resposeSwbean.setCommand(Protocols.BANKLIST);
                         resposeSwbean.setRecommand(Protocols.BANKLIST);
                     }
@@ -152,20 +165,20 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 case Protocols.BANKCARDLIST:
                     if (true) {
 
-                        resposeSwbean.setBankCardList(bankCardServiceImpl.queryListAll());
-                        System.out.println("command:" + bankCardServiceImpl.queryListAll());
+                        resposeSwbean.setXinYongKasEntities(xinYongKasServiceImpl.queryListAll());
+                        System.out.println("command:" + xinYongKasServiceImpl.queryListAll());
                         resposeSwbean.setCommand(Protocols.BANKCARDLIST);
                         resposeSwbean.setRecommand(Protocols.BANKCARDLIST);
                     }
                     break;
                 //银行借贷通道
-                case Protocols.PRODUCTEBITLIST:
+                case Protocols.DAIKUANLIST:
                     if (true) {
 
-                        resposeSwbean.setProductList(productServiceImpl.queryProductDebitAll());
-                        System.out.println("command:" + productServiceImpl.queryProductDebitAll());
-                        resposeSwbean.setCommand(Protocols.PRODUCTEBITLIST);
-                        resposeSwbean.setRecommand(Protocols.PRODUCTEBITLIST);
+                        resposeSwbean.setDaikuansEntities(daikuansServiceImpl.queryListAll());
+                        System.out.println("command:" + daikuansServiceImpl.queryListAll());
+                        resposeSwbean.setCommand(Protocols.DAIKUANLIST);
+                        resposeSwbean.setRecommand(Protocols.DAIKUANLIST);
                     }
                     break;
                 /************************ 客户端登陆 ***********************/
@@ -230,15 +243,7 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                     break;
 
 
-                case Protocols.PRODUCTLIST:
-                    if (true) {
-                        ArrayList<ImsXuanMixloanProductEntity> productEntityArrayList = new ArrayList<ImsXuanMixloanProductEntity>();
-                        SWImpl swImpl = new SWImpl();
-                        productEntityArrayList = swImpl.getproductArrayList();
-                        resposeSwbean.setProductList(productEntityArrayList);
-                        resposeSwbean.setRecommand(Protocols.PRODUCTLIST);
-                    }
-                    break;
+
                 case Protocols.KOUZILIST:
                     if (true) {
                         ArrayList<KouziBean> kouziBeans = KouziImpl.getKouziList();

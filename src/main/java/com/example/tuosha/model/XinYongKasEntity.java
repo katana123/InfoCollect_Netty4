@@ -205,4 +205,7 @@ public class XinYongKasEntity implements Serializable{
 	public String toString() {
 		return  ReflectionToStringBuilder.toString(this);
 	}
+
+
+
 }
