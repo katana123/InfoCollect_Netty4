@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.AlipayDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.AlipayEntity" id="alipayMap">
+        <result property="id" column="id"/>
+        <result property="body" column="body"/>
+        <result property="subject" column="subject"/>
+        <result property="productcode" column="productCode"/>
+        <result property="notifyurl" column="notifyUrl"/>
+        <result property="price" column="price"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     body ,  	        
+  	  	     subject ,  	        
+  	  	      productCode as productcode  ,  	        
+  	  	      notifyUrl as notifyurl  ,  	        
+  	  	     price   	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.AlipayEntity">
+		select  <include refid="Base_Column_List" />  from alipay where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.AlipayEntity">
+		select  <include refid="Base_Column_List" />  from alipay
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from alipay 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.AlipayEntity">
+		insert into alipay
+		(
+			`id`, 
+			`body`, 
+			`subject`, 
+			`productCode`, 
+			`notifyUrl`, 
+			`price`
+		)
+		values
+		(
+			#{id}, 
+			#{body}, 
+			#{subject}, 
+			#{productcode}, 
+			#{notifyurl}, 
+			#{price}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.AlipayEntity">
+		update alipay 
+		<set>
+			<if test="body != null">`body` = #{body}, </if>
+			<if test="subject != null">`subject` = #{subject}, </if>
+			<if test="productcode != null">`productCode` = #{productcode}, </if>
+			<if test="notifyurl != null">`notifyUrl` = #{notifyurl}, </if>
+			<if test="price != null">`price` = #{price}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from alipay where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from alipay where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.ProductsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.ProductsEntity" id="productsMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="image" column="image"/>
+        <result property="price" column="price"/>
+        <result property="des" column="des"/>
+        <result property="sales" column="sales"/>
+        <result property="intro" column="intro"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     name ,  	        
+  	  	     image ,  	        
+  	  	     price ,  	        
+  	  	     des ,  	        
+  	  	     sales ,  	        
+  	  	     intro ,  	        
+  	  	      created_at as createdAt  ,  	        
+  	  	      updated_at as updatedAt  ,  	        
+  	  	      deleted_at as deletedAt    	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.ProductsEntity">
+		select  <include refid="Base_Column_List" />  from products where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.ProductsEntity">
+		select  <include refid="Base_Column_List" />  from products
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from products 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.ProductsEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into products
+		(
+			`name`, 
+			`image`, 
+			`price`, 
+			`des`, 
+			`sales`, 
+			`intro`, 
+			`created_at`, 
+			`updated_at`, 
+			`deleted_at`
+		)
+		values
+		(
+			#{name}, 
+			#{image}, 
+			#{price}, 
+			#{des}, 
+			#{sales}, 
+			#{intro}, 
+			#{createdAt}, 
+			#{updatedAt}, 
+			#{deletedAt}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.ProductsEntity">
+		update products 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="image != null">`image` = #{image}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="des != null">`des` = #{des}, </if>
+			<if test="sales != null">`sales` = #{sales}, </if>
+			<if test="intro != null">`intro` = #{intro}, </if>
+			<if test="createdAt != null">`created_at` = #{createdAt}, </if>
+			<if test="updatedAt != null">`updated_at` = #{updatedAt}, </if>
+			<if test="deletedAt != null">`deleted_at` = #{deletedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from products where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from products where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

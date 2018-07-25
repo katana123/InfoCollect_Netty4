@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.JieQianJqCatDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.JieQianJqCatEntity" id="jieQianJqCatMap">
+        <result property="id" column="id"/>
+        <result property="jieQianId" column="jie_qian_id"/>
+        <result property="jqCatId" column="jq_cat_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	      jie_qian_id as jieQianId  ,  	        
+  	  	      jq_cat_id as jqCatId  ,  	        
+  	  	      created_at as createdAt  ,  	        
+  	  	      updated_at as updatedAt  ,  	        
+  	  	      deleted_at as deletedAt    	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.JieQianJqCatEntity">
+		select  <include refid="Base_Column_List" />  from jie_qian_jq_cat where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.JieQianJqCatEntity">
+		select  <include refid="Base_Column_List" />  from jie_qian_jq_cat
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from jie_qian_jq_cat 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.JieQianJqCatEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into jie_qian_jq_cat
+		(
+			`jie_qian_id`, 
+			`jq_cat_id`, 
+			`created_at`, 
+			`updated_at`, 
+			`deleted_at`
+		)
+		values
+		(
+			#{jieQianId}, 
+			#{jqCatId}, 
+			#{createdAt}, 
+			#{updatedAt}, 
+			#{deletedAt}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.JieQianJqCatEntity">
+		update jie_qian_jq_cat 
+		<set>
+			<if test="jieQianId != null">`jie_qian_id` = #{jieQianId}, </if>
+			<if test="jqCatId != null">`jq_cat_id` = #{jqCatId}, </if>
+			<if test="createdAt != null">`created_at` = #{createdAt}, </if>
+			<if test="updatedAt != null">`updated_at` = #{updatedAt}, </if>
+			<if test="deletedAt != null">`deleted_at` = #{deletedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from jie_qian_jq_cat where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from jie_qian_jq_cat where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

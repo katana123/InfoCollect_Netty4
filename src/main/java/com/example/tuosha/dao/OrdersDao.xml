@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.OrdersDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.OrdersEntity" id="ordersMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="money" column="money"/>
+        <result property="payNo" column="pay_no"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	      user_id as userId  ,  	        
+  	  	     money ,  	        
+  	  	      pay_no as payNo  ,  	        
+  	  	      pay_status as payStatus  ,  	        
+  	  	      created_at as createdAt  ,  	        
+  	  	      updated_at as updatedAt  ,  	        
+  	  	      deleted_at as deletedAt    	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.OrdersEntity">
+		select  <include refid="Base_Column_List" />  from orders where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.OrdersEntity">
+		select  <include refid="Base_Column_List" />  from orders
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from orders 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.OrdersEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into orders
+		(
+			`user_id`, 
+			`money`, 
+			`pay_no`, 
+			`pay_status`, 
+			`created_at`, 
+			`updated_at`, 
+			`deleted_at`
+		)
+		values
+		(
+			#{userId}, 
+			#{money}, 
+			#{payNo}, 
+			#{payStatus}, 
+			#{createdAt}, 
+			#{updatedAt}, 
+			#{deletedAt}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.OrdersEntity">
+		update orders 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="money != null">`money` = #{money}, </if>
+			<if test="payNo != null">`pay_no` = #{payNo}, </if>
+			<if test="payStatus != null">`pay_status` = #{payStatus}, </if>
+			<if test="createdAt != null">`created_at` = #{createdAt}, </if>
+			<if test="updatedAt != null">`updated_at` = #{updatedAt}, </if>
+			<if test="deletedAt != null">`deleted_at` = #{deletedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from orders where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from orders where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

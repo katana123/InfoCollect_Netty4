@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.JieQiansDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.JieQiansEntity" id="jieQiansMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="advantage" column="advantage"/>
+        <result property="image" column="image"/>
+        <result property="view" column="view"/>
+        <result property="hot" column="hot"/>
+        <result property="pass" column="pass"/>
+        <result property="min" column="min"/>
+        <result property="max" column="max"/>
+        <result property="timeUnit" column="time_unit"/>
+        <result property="minTime" column="min_time"/>
+        <result property="maxTime" column="max_time"/>
+        <result property="rate" column="rate"/>
+        <result property="fangkuanTime" column="fangkuan_time"/>
+        <result property="liucheng" column="liucheng"/>
+        <result property="tiaojian" column="tiaojian"/>
+        <result property="cailiao" column="cailiao"/>
+        <result property="link" column="link"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     name ,  	        
+  	  	     advantage ,  	        
+  	  	     image ,  	        
+  	  	     view ,  	        
+  	  	     hot ,  	        
+  	  	     pass ,  	        
+  	  	     min ,  	        
+  	  	     max ,  	        
+  	  	      time_unit as timeUnit  ,  	        
+  	  	      min_time as minTime  ,  	        
+  	  	      max_time as maxTime  ,  	        
+  	  	     rate ,  	        
+  	  	      fangkuan_time as fangkuanTime  ,  	        
+  	  	     liucheng ,  	        
+  	  	     tiaojian ,  	        
+  	  	     cailiao ,  	        
+  	  	     link ,  	        
+  	  	      created_at as createdAt  ,  	        
+  	  	      updated_at as updatedAt  ,  	        
+  	  	      deleted_at as deletedAt    	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.JieQiansEntity">
+		select  <include refid="Base_Column_List" />  from jie_qians where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.JieQiansEntity">
+		select  <include refid="Base_Column_List" />  from jie_qians
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from jie_qians 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.JieQiansEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into jie_qians
+		(
+			`name`, 
+			`advantage`, 
+			`image`, 
+			`view`, 
+			`hot`, 
+			`pass`, 
+			`min`, 
+			`max`, 
+			`time_unit`, 
+			`min_time`, 
+			`max_time`, 
+			`rate`, 
+			`fangkuan_time`, 
+			`liucheng`, 
+			`tiaojian`, 
+			`cailiao`, 
+			`link`, 
+			`created_at`, 
+			`updated_at`, 
+			`deleted_at`
+		)
+		values
+		(
+			#{name}, 
+			#{advantage}, 
+			#{image}, 
+			#{view}, 
+			#{hot}, 
+			#{pass}, 
+			#{min}, 
+			#{max}, 
+			#{timeUnit}, 
+			#{minTime}, 
+			#{maxTime}, 
+			#{rate}, 
+			#{fangkuanTime}, 
+			#{liucheng}, 
+			#{tiaojian}, 
+			#{cailiao}, 
+			#{link}, 
+			#{createdAt}, 
+			#{updatedAt}, 
+			#{deletedAt}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.JieQiansEntity">
+		update jie_qians 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="advantage != null">`advantage` = #{advantage}, </if>
+			<if test="image != null">`image` = #{image}, </if>
+			<if test="view != null">`view` = #{view}, </if>
+			<if test="hot != null">`hot` = #{hot}, </if>
+			<if test="pass != null">`pass` = #{pass}, </if>
+			<if test="min != null">`min` = #{min}, </if>
+			<if test="max != null">`max` = #{max}, </if>
+			<if test="timeUnit != null">`time_unit` = #{timeUnit}, </if>
+			<if test="minTime != null">`min_time` = #{minTime}, </if>
+			<if test="maxTime != null">`max_time` = #{maxTime}, </if>
+			<if test="rate != null">`rate` = #{rate}, </if>
+			<if test="fangkuanTime != null">`fangkuan_time` = #{fangkuanTime}, </if>
+			<if test="liucheng != null">`liucheng` = #{liucheng}, </if>
+			<if test="tiaojian != null">`tiaojian` = #{tiaojian}, </if>
+			<if test="cailiao != null">`cailiao` = #{cailiao}, </if>
+			<if test="link != null">`link` = #{link}, </if>
+			<if test="createdAt != null">`created_at` = #{createdAt}, </if>
+			<if test="updatedAt != null">`updated_at` = #{updatedAt}, </if>
+			<if test="deletedAt != null">`deleted_at` = #{deletedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from jie_qians where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from jie_qians where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

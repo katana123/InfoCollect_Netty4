@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.EDusDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.EDusEntity" id="eDusMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="image" column="image"/>
+        <result property="link" column="link"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     name ,  	        
+  	  	     image ,  	        
+  	  	     link ,  	        
+  	  	      created_at as createdAt  ,  	        
+  	  	      updated_at as updatedAt  ,  	        
+  	  	      deleted_at as deletedAt    	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.EDusEntity">
+		select  <include refid="Base_Column_List" />  from e_dus where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.EDusEntity">
+		select  <include refid="Base_Column_List" />  from e_dus
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from e_dus 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.EDusEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into e_dus
+		(
+			`name`, 
+			`image`, 
+			`link`, 
+			`created_at`, 
+			`updated_at`, 
+			`deleted_at`
+		)
+		values
+		(
+			#{name}, 
+			#{image}, 
+			#{link}, 
+			#{createdAt}, 
+			#{updatedAt}, 
+			#{deletedAt}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.EDusEntity">
+		update e_dus 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="image != null">`image` = #{image}, </if>
+			<if test="link != null">`link` = #{link}, </if>
+			<if test="createdAt != null">`created_at` = #{createdAt}, </if>
+			<if test="updatedAt != null">`updated_at` = #{updatedAt}, </if>
+			<if test="deletedAt != null">`deleted_at` = #{deletedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from e_dus where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from e_dus where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

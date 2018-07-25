@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="import com.example.tuosha.dao.CategoriesDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.tuosha.model.CategoriesEntity" id="categoriesMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="image" column="image"/>
+        <result property="shoufei" column="shoufei"/>
+        <result property="sort" column="sort"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     name ,  	        
+  	  	     image ,  	        
+  	  	     shoufei ,  	        
+  	  	     sort ,  	        
+  	  	      created_at as createdAt  ,  	        
+  	  	      updated_at as updatedAt  ,  	        
+  	  	      deleted_at as deletedAt    	        
+  	  
+  </sql>
+
+	<select id="queryObject" resultType="com.example.tuosha.model.CategoriesEntity">
+		select  <include refid="Base_Column_List" />  from categories where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.example.tuosha.model.CategoriesEntity">
+		select  <include refid="Base_Column_List" />  from categories
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from categories 
+	</select>
+	 
+	<insert id="save" parameterType="com.example.tuosha.model.CategoriesEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into categories
+		(
+			`name`, 
+			`image`, 
+			`shoufei`, 
+			`sort`, 
+			`created_at`, 
+			`updated_at`, 
+			`deleted_at`
+		)
+		values
+		(
+			#{name}, 
+			#{image}, 
+			#{shoufei}, 
+			#{sort}, 
+			#{createdAt}, 
+			#{updatedAt}, 
+			#{deletedAt}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.example.tuosha.model.CategoriesEntity">
+		update categories 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="image != null">`image` = #{image}, </if>
+			<if test="shoufei != null">`shoufei` = #{shoufei}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="createdAt != null">`created_at` = #{createdAt}, </if>
+			<if test="updatedAt != null">`updated_at` = #{updatedAt}, </if>
+			<if test="deletedAt != null">`deleted_at` = #{deletedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from categories where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from categories where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
