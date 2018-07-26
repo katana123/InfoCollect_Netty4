@@ -65,7 +65,7 @@ public class TiEsServiceImpl implements TiEsService {
 		Connection conn = null;
 		try {
 			conn = ConnectionUtil.getmysqlConnection();
-			String selectSql = "select * from xin_yong_kas";
+			String selectSql = "select * from ti_es";
 			pst = conn.prepareStatement(selectSql);
 			rs = pst.executeQuery();
 			while (rs.next()) {

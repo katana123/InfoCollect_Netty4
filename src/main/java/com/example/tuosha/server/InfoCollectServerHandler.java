@@ -75,6 +75,7 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
     public OrdersServiceImpl ordersServiceImpl = new OrdersServiceImpl();
     public PasswordResetsServiceImpl passwordResetsServiceImpl = new PasswordResetsServiceImpl();
     public PostsServiceImpl postsServiceImpl = new PostsServiceImpl();
+    public ProcessesServiceImpl processesServiceImpl = new ProcessesServiceImpl();
     public ProductsServiceImpl productsServicesImpl = new ProductsServiceImpl();
     public SettingsServiceImpl settingsServiceImpl= new SettingsServiceImpl();
     public TiEsServiceImpl tiEsServiceImpl = new TiEsServiceImpl();
@@ -177,6 +178,16 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                         System.out.println("command:" + daikuansServiceImpl.queryListAll());
                         resposeSwbean.setCommand(Protocols.DAIKUANLIST);
                         resposeSwbean.setRecommand(Protocols.DAIKUANLIST);
+                    }
+                    break;
+                //银行贷款查询进度
+                case Protocols.PROGRESSLIST:
+                    if (true) {
+
+                        resposeSwbean.setProcessesEntities(processesServiceImpl.queryListAll());
+                        System.out.println("command:" + processesServiceImpl.queryListAll());
+                        resposeSwbean.setCommand(Protocols.PROGRESSLIST);
+                        resposeSwbean.setRecommand(Protocols.PROGRESSLIST);
                     }
                     break;
                 /************************ 客户端登陆 ***********************/

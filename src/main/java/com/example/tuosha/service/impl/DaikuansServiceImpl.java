@@ -66,7 +66,7 @@ public class DaikuansServiceImpl implements DaikuansService {
 		Connection conn = null;
 		try {
 			conn = ConnectionUtil.getmysqlConnection();
-			String selectSql = "select * from xin_yong_kas";
+			String selectSql = "select * from daikuans";
 			pst = conn.prepareStatement(selectSql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
