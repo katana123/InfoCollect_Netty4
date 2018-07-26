@@ -105,7 +105,6 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
 
             SWbean swbean = (SWbean) NetWorkImpl.getObj(infocolBytes);
 
-
             if (swbean.getCommand() == Protocols.HEART_BEAT) {
 
             } else {
@@ -119,22 +118,20 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 /************************ 用户权限判断 ***********************/
                 case Protocols.WELCOME:               //返回副协议: 0为未注册 1为已注册 2
                     if (true) {
-                        TbUsersEntity systemUser = swbean.getTbUsersEntity();
-                        //String imei =  systemUser.getImei();
-                        //resposeSwbean.setTbUsersEntity(tbUsersServiceImpl.queryImei(imei));
-                        //int result=Integer.parseInt(tbUsersServiceImpl.queryImei(imei).getStatus()  );
+                        UsersEntity systemUser = swbean.getUsersEntity();
+
                         String nickname = systemUser.getNickname();
                         String password = systemUser.getPassword();
-                        TbUsersEntity rebackUser = tbUsersServiceImpl.queryuser(nickname, password);
+                        String mobile = systemUser.getMobile();
+                        UsersEntity rebackUser = usersServiceImpl.queryuser(mobile, password);
 
                         if (rebackUser.getStatus() != null) {
-                            resposeSwbean.setTbUsersEntity(rebackUser);
-                            int result = Integer.parseInt(rebackUser.getStatus());
+                            resposeSwbean.setUsersEntity(rebackUser);
+                            int result = rebackUser.getMember();
                             System.out.println("Status:" + result);
                             System.out.println("0:未激活，1，正常，2，禁用,3没有");
                             resposeSwbean.setResult(result);
                         } else {
-                            System.out.println("jihao1");
                             resposeSwbean.setResult(3);
                         }
                         resposeSwbean.setRecommand(Protocols.WELCOME);
@@ -184,19 +181,19 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 /************************ 客户端登陆 ***********************/
                 case Protocols.LOGIN:
                     if (true) {
-                        TbUsersEntity systemUser = swbean.getTbUsersEntity();
+                        UsersEntity systemUser = swbean.getUsersEntity();
                         //String nickname =  systemUser.getNickname();
-                        String phone =  systemUser.getPhone();
+                        String mobile =  systemUser.getMobile();
 
                         String password =  systemUser.getPassword();
 
-                        TbUsersEntity rebackUser =tbUsersServiceImpl.queryuser(phone,password);
+                        UsersEntity rebackUser =usersServiceImpl.queryuser(mobile,password);
                         System.out.println("sql执行完成"+rebackUser);
                         if (rebackUser.getStatus()!=null) {
                             System.out.println("sql执行完成2"+rebackUser);
-                            resposeSwbean.setTbUsersEntity(rebackUser);
-                            int result = Integer.parseInt(rebackUser.getStatus());
-                            resposeSwbean.setTbUsersEntity(rebackUser);
+                            resposeSwbean.setUsersEntity(rebackUser);
+                            int result = rebackUser.getMember();
+                            resposeSwbean.setUsersEntity(rebackUser);
 
                             System.out.println("Status:" + result);
                             System.out.println("0:未激活，1，正常，2，禁用");
@@ -212,12 +209,12 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 /************************ 客户端注册新用户 ***********************/
                 case Protocols.REGISTER:
                     if (true) {
-                        TbUsersEntity systemUser = swbean.getTbUsersEntity(); //need system user bean
-                        int result = tbUsersServiceImpl.insertuser(systemUser);
+                        UsersEntity systemUser = swbean.getUsersEntity(); //need system user bean
+                        int result = usersServiceImpl.insertuser(systemUser);
                         System.out.println("客户端注册新用户结果为：" + result);
                         System.out.println("1表示插入成功，2表示插入失败");
                         resposeSwbean.setResult(result);
-                        resposeSwbean.setTbUsersEntity(systemUser);
+                        resposeSwbean.setUsersEntity(systemUser);
                         resposeSwbean.setCommand(Protocols.REGISTER);
                         resposeSwbean.setRecommand(Protocols.REGISTER);
                     }
@@ -225,9 +222,9 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 /************************ 客户端判断用户名是否可用 ***********************/
                 case Protocols.CHECKNAME:
                     if (true) {
-                        TbUsersEntity mUser = swbean.getTbUsersEntity(); //need system user bean
+                        UsersEntity mUser = swbean.getUsersEntity(); //need system user bean
 
-                        TbUsersEntity rebackUser = tbUsersServiceImpl.queryname(mUser.getNickname());
+                        UsersEntity rebackUser = usersServiceImpl.queryname(mUser.getNickname());
 
                         if (rebackUser.getNickname() != null) {
 
