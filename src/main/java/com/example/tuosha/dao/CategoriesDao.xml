@@ -45,6 +45,23 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+    <select id="selectAllCategories" resultType="com.example.tuosha.model.CategoriesEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from categories
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from categories 

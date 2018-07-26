@@ -1,6 +1,7 @@
 package com.example.tuosha.service;
 
 import com.example.tuosha.model.AlipayEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  * @email 1044053532@qq.com
  * @date 2018-07-25 09:38:58
  */
+@Service
 public interface AlipayService {
 	
 	AlipayEntity queryObject(Integer id);

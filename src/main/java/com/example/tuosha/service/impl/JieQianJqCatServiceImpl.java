@@ -16,8 +16,9 @@ import com.example.tuosha.service.JieQianJqCatService;
 public class JieQianJqCatServiceImpl implements JieQianJqCatService {
 	@Autowired
 	private JieQianJqCatDao jieQianJqCatDao;
-	
-	@Override
+
+
+    @Override
 	public JieQianJqCatEntity queryObject(Integer id){
 		return jieQianJqCatDao.queryObject(id);
 	}
@@ -51,5 +52,5 @@ public class JieQianJqCatServiceImpl implements JieQianJqCatService {
 	public int deleteBatch(Integer[] ids){
 		return jieQianJqCatDao.deleteBatch(ids);
 	}
-	
+
 }

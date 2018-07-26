@@ -2,6 +2,8 @@ package com.example.tuosha.dao;
 import com.example.tuosha.base.dao.BaseDao;
 import com.example.tuosha.model.CategoriesEntity;
 
+import java.util.List;
+
 /**
  * 
  * 
@@ -10,5 +12,6 @@ import com.example.tuosha.model.CategoriesEntity;
  * @date 2018-07-25 09:38:58
  */
 public interface CategoriesDao extends BaseDao<CategoriesEntity> {
-	
+
+    List<CategoriesEntity> selectAllCategories();
 }

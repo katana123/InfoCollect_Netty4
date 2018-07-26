@@ -14,6 +14,7 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.hibernate.mapping.Array;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -243,20 +244,8 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
 
                 case Protocols.KOUZILIST:
                     if (true) {
-                        ArrayList<KouziBean> kouziBeans = KouziImpl.getKouziList();
-                        Long currentTime = new Date().getTime() / 1000;
-                        for (int i = 0; i < kouziBeans.size(); i++) {
-                            Long kouzitime = Long.valueOf(kouziBeans.get(i).getKouzitime());
-                            Long TimeDif = currentTime - kouzitime;
-                            int daybefore = (int) Math.ceil(TimeDif / (60 * 60 * 24L));
-                            String daybeforeStr = String.valueOf(daybefore);
-                            kouziBeans.get(i).setKouzitime(daybeforeStr);
-                            JSONObject JsonStr = JSONObject.parseObject(kouziBeans.get(i).getExtInfo());
-                            String kouziUrl = JsonStr.getString("url");
-                            kouziBeans.get(i).setKouzi_url(kouziUrl);
-                        }
-
-                        resposeSwbean.setKouziBean(kouziBeans);
+                        ArrayList<JieQiansEntity> jieQiansEntities = JieQiansServiceImpl.getJieQianList();
+                        resposeSwbean.setJieQiansEntities(jieQiansEntities);
                         resposeSwbean.setCommand(Protocols.KOUZILIST);
                         resposeSwbean.setRecommand(Protocols.KOUZILIST);
                     }
@@ -264,54 +253,27 @@ public class InfoCollectServerHandler extends ChannelDuplexHandler {
                 case Protocols.KOUZISECONDLIST:
                     if (true) {
                         int KouziType = swbean.getKouziType();
-                        ArrayList<KouziBean> kouziBeans = KouziImpl.getKouziListByType(KouziType);
-                        Long currentTime = new Date().getTime() / 1000;
-                        for (int i = 0; i < kouziBeans.size(); i++) {
-                            Long kouzitime = Long.valueOf(kouziBeans.get(i).getKouzitime());
-                            Long TimeDif = currentTime - kouzitime;
-                            int daybefore = (int) Math.ceil(TimeDif / (60 * 60 * 24L));
-                            String daybeforeStr = String.valueOf(daybefore);
-                            kouziBeans.get(i).setKouzitime(daybeforeStr);
-                        }
-
-                        resposeSwbean.setKouziBean(kouziBeans);
+                        ArrayList<JieQiansEntity> jieQiansEntities = JieQiansServiceImpl.getJieQianListByType(KouziType);
+                        resposeSwbean.setJieQiansEntities(jieQiansEntities);
                         resposeSwbean.setCommand(Protocols.KOUZISECONDLIST);
                         resposeSwbean.setRecommand(Protocols.KOUZISECONDLIST);
                     }
                     break;
                 case Protocols.CONTENTLIST:
                     if (true) {
-                        ArrayList<ContentBean> contentBeans = ContentImpl.getContentList();
-                        Long currentTime = new Date().getTime() / 1000;
-                        for (int i = 0; i < contentBeans.size(); i++) {
-                            Long kouzitime = Long.valueOf(contentBeans.get(i).getNewstime());
-                            Long TimeDif = currentTime - kouzitime;
-                            int daybefore = (int) Math.ceil(TimeDif / (60 * 60 * 24L));
-                            String daybeforeStr = String.valueOf(daybefore);
-                            contentBeans.get(i).setNewstime(daybeforeStr);
-                        }
-
-                        resposeSwbean.setContentBean(contentBeans);
+                        System.out.println(22222);
+                        ArrayList<PostsEntity> postsEntities = PostsServiceImpl.getPostsList();
+                        resposeSwbean.setPostsEntities(postsEntities);
                         resposeSwbean.setCommand(Protocols.CONTENTLIST);
                         resposeSwbean.setRecommand(Protocols.CONTENTLIST);
                     }
                     break;
                 case Protocols.CONTENTLISTBYID:
-                    int JisuId = swbean.getJisuType();
-                    ArrayList<ContentBean> contentBeans = ContentImpl.getContentListByType(JisuId);
-                    Long currentTime = new Date().getTime() / 1000;
-                    for (int i = 0; i < contentBeans.size(); i++) {
-                        Long kouzitime = Long.valueOf(contentBeans.get(i).getNewstime());
-                        Long TimeDif = currentTime - kouzitime;
-                        int daybefore = (int) Math.ceil(TimeDif / (60 * 60 * 24L));
-                        String daybeforeStr = String.valueOf(daybefore);
-                        contentBeans.get(i).setNewstime(daybeforeStr);
-//                        JSONObject JsonStr = JSONObject.fromObject(contentBeans.get(i).getIcon_url());
-//                        String kouziUrl = JsonStr.getString("content");
-//                        contentBeans.get(i).setNews_url(kouziUrl);
-                    }
 
-                    resposeSwbean.setContentBean(contentBeans);
+                    int JisuId = swbean.getJisuType();
+                    System.out.println(JisuId);
+                    ArrayList<PostsEntity> postsEntities = PostsServiceImpl.getPostsListByType(JisuId);
+                    resposeSwbean.setPostsEntities(postsEntities);
                     resposeSwbean.setCommand(Protocols.CONTENTLISTBYID);
                     resposeSwbean.setRecommand(Protocols.CONTENTLISTBYID);
                     break;

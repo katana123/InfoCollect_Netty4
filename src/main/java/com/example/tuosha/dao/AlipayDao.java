@@ -1,6 +1,7 @@
 package com.example.tuosha.dao;
 import com.example.tuosha.base.dao.BaseDao;
 import com.example.tuosha.model.AlipayEntity;
+import org.springframework.stereotype.Repository;
 
 /**
  * 

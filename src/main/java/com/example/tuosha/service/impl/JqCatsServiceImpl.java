@@ -1,8 +1,13 @@
 package com.example.tuosha.service.impl;
 
+import com.example.tuosha.Util.ConnectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,5 +56,32 @@ public class JqCatsServiceImpl implements JqCatsService {
 	public int deleteBatch(Integer[] ids){
 		return jqCatsDao.deleteBatch(ids);
 	}
-	
+
+
+	public static ArrayList<JqCatsEntity> queryCats() {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		ArrayList<JqCatsEntity> result = new ArrayList<JqCatsEntity>();
+		Connection conn = null;
+		try {
+			conn = ConnectionUtil.getmysqlConnection();
+			String selectSql = "select * from jq_cats";
+			pst = conn.prepareStatement(selectSql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				JqCatsEntity jqc = new JqCatsEntity();
+				jqc.setName(rs.getString("name"));//请求的银行名称
+				jqc.setId(rs.getInt("id"));
+				jqc.setImage(rs.getString("image"));
+				result.add(jqc);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionUtil.close(rs, pst, conn);
+		}
+		return result;
+		//return imsXuanMixloanBankDao.queryListAll();
+	}
 }

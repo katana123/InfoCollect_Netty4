@@ -51,5 +51,4 @@ public class CategoriesServiceImpl implements CategoriesService {
 	public int deleteBatch(Integer[] ids){
 		return categoriesDao.deleteBatch(ids);
 	}
-	
 }

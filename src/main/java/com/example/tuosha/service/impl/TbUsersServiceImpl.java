@@ -82,7 +82,7 @@ public class TbUsersServiceImpl implements TbUsersService {
 		return result;
 	}
 
-	public TbUsersEntity queryuser(String phone, String password){
+    public TbUsersEntity queryuser(String nickname, String password) {
 
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -90,7 +90,7 @@ public class TbUsersServiceImpl implements TbUsersService {
 		Connection conn = null;
 		try {
 			conn = ConnectionUtil.getmysqlConnection();
-			String selectSql = "select * from tb_users where phone='"+phone+"' and password='"+password+"'";
+            String selectSql = "select * from tb_users where nickname='" + nickname + "' and password='" + password + "'";
 			System.out.println(selectSql);
 			pst = conn.prepareStatement(selectSql);
 			rs = pst.executeQuery();

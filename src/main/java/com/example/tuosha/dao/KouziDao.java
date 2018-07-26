@@ -18,19 +18,16 @@ public class KouziDao {
 
         try {
             conn = ConnectionUtil.getmysqlConnection();
-            String selectSql = "SELECT DISTINCT ext_info,name,apply_nums,createtime " +
-                    "FROM irs1.ims_xuan_mixloan_loan ORDER BY irs1.ims_xuan_mixloan_loan.createtime DESC limit 10";
+            String selectSql = "SELECT DISTINCT advantage,name,view,created_at " +
+                    "FROM jie_qians ORDER BY created_at DESC limit 10";
             pst = conn.prepareStatement(selectSql);
             System.out.println("xxm test: selectSql =" + selectSql);
             rs = pst.executeQuery();
             while (rs.next()) {
                 KouziBean kouziList = new KouziBean();
-                System.out.println("kouziList" + rs.getString("createtime"));
-                // icf.setCisdate(rs.getString("cisdate"));
                 kouziList.setTitle(rs.getString("name"));
-                kouziList.setClicknum(rs.getString("apply_nums"));
+                kouziList.setClicknum(rs.getString("view"));
                 kouziList.setExtInfo(rs.getString("ext_info"));
-//                kouziList.setKouzi_url(rs.getString("ext_info"));
                 kouziList.setKouzitime(rs.getString("createtime"));
                 result.add(kouziList);
             }

@@ -79,7 +79,7 @@ public class ConnectionUtil {
             throws ClassNotFoundException, SQLException {
         Connection conn = null;
         String DRIVER = "com.mysql.jdbc.Driver";
-        String URL = "jdbc:mysql://127.0.0.1:3306/irs1?useUnicode=true&amp;"
+        String URL = "jdbc:mysql://127.0.0.1:3306/hkj?useUnicode=true&amp;"
                 + "characterEncoding=UTF-8&amp;autoReconnect=true&&zeroDateTimeBehavior=convertToNull";
         try {
             Class.forName(DRIVER).newInstance();
