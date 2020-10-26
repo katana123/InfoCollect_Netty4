@@ -18,7 +18,7 @@
         <log4j2.version>2.7</log4j2.version>
 
 
-        <jackson.version>2.9.2</jackson.version>
+        <jackson.version>2.11.3</jackson.version>
         <druid.version>1.0.20</druid.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <aspectj.version>1.8.9</aspectj.version>
